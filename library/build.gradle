@@ -8,10 +8,10 @@ ext {
     libraryName = 'GSheets2A'
     artifact = 'gsheets2a'
 
-    libraryDescription = 'Google Sheets to Android'
+    libraryDescription = 'Fetch data from Google Sheets to Android'
 
     siteUrl = ''
-    gitUrl = ''
+    gitUrl = 'https://github.com/darkowlzz/gsheets2a.git'
 
     libraryVersion = '0.0.1'
 

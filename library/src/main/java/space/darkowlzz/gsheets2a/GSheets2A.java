@@ -1,8 +1,6 @@
 package space.darkowlzz.gsheets2a;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -11,15 +9,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by sunny on 04/12/15.
- */
 public class GSheets2A {
     String key;
     ArrayList columns;
@@ -33,7 +27,6 @@ public class GSheets2A {
     public GSheets2A(String key, Context ctx) {
         this.key = key;
         this.mCtx = ctx;
-        //this.columns = columns;
     }
 
     public String getKey() {
