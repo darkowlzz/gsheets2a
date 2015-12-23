@@ -75,7 +75,7 @@ Add to build.gradle depencencies
 
 ```groovy
 dependencies {
-    compile 'space.darkowlzz:gsheets2a:0.0.1'
+    compile 'space.darkowlzz:gsheets2a:0.1.0'
 }
 ```
 
