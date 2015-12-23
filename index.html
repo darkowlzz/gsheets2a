@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Gsheets2a by darkowlzz</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Gsheets2a</h1>
+        <p>An android library to fetch Google Sheets data.</p>
+
+        <p class="view"><a href="https://github.com/darkowlzz/gsheets2a">View the Project on GitHub <small>darkowlzz/gsheets2a</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/darkowlzz/gsheets2a/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/darkowlzz/gsheets2a/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/darkowlzz/gsheets2a">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="gsheets2a" class="anchor" href="#gsheets2a" aria-hidden="true"><span class="octicon octicon-link"></span></a>GSheets2A</h1>
+
+<p>GSheets2A - An android library to fetch Google Sheets data.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>GSheets2A expects the spreadsheet data to be stored in objects, hence requires an object type to store the data.
+For example, <a href="https://docs.google.com/spreadsheets/d/1tJ64Y8hje0ui4ap9U33h3KWwpxT_-JuVMSZzxD2Er8k">this</a> spreadsheet contains data from English Premier League Finals. For this data a class <code>Team</code> could be created something like:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Team</span> {
+    <span class="pl-smi">String</span> name;
+    <span class="pl-smi">Integer</span> totalWins;
+    <span class="pl-c1">...</span>
+}</pre></div>
+
+<p>For this class to store spreadsheet data received from gsheets2a, it should implement <code>DataObject</code> interface defined in gsheets2a. This interface just one method which looks like:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">interface</span> <span class="pl-en">DataObject</span> {
+    <span class="pl-k">void</span> <span class="pl-en">saveData</span>(<span class="pl-k">ArrayList&lt;<span class="pl-smi">String</span>&gt;</span> <span class="pl-v">data</span>);
+}</pre></div>
+
+<p>Here is an example how class <code>Team</code> could implement <code>DataObject</code>:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Team</span> <span class="pl-k">implements</span> <span class="pl-e">GSheets2A</span>.<span class="pl-e">DataObject</span> {
+
+    <span class="pl-smi">String</span> name;
+    <span class="pl-smi">Integer</span> totalWins;
+    <span class="pl-c1">...</span>
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">saveData</span>(<span class="pl-k">ArrayList&lt;<span class="pl-smi">String</span>&gt;</span> <span class="pl-v">data</span>) {
+        <span class="pl-c">// As per the table https://docs.google.com/spreadsheets/d/1tJ64Y8hje0ui4ap9U33h3KWwpxT_-JuVMSZzxD2Er8k</span>
+        name <span class="pl-k">=</span> data<span class="pl-k">.</span>get(<span class="pl-c1">1</span>); <span class="pl-c">// 2nd column </span>
+        totalWins <span class="pl-k">=</span> <span class="pl-smi">Math</span><span class="pl-k">.</span>round(<span class="pl-smi">Float</span><span class="pl-k">.</span>parseFloat(data<span class="pl-k">.</span>get(<span class="pl-c1">3</span>))); <span class="pl-c">// 3rd column</span>
+        <span class="pl-c1">...</span>
+    }
+}</pre></div>
+
+<p>Now, to fetch the data create an instance of <code>GSheets2A</code> with key of the google sheet and application context.</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">GSheets2A</span> gSheets2A <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">GSheets2A</span>(<span class="pl-s"><span class="pl-pds">"</span>1tJ64Y8hje0ui4ap9U33h3KWwpxT_-JuVMSZzxD2Er8k<span class="pl-pds">"</span></span>, getApplicationContext());</pre></div>
+
+<p>The key of a google sheet can be extracted from the public url of the sheet. Public url could be obtained from File &gt; Share in Google Sheets.</p>
+
+<p>Fetch the data using the above <code>gSheets2A</code> object like:</p>
+
+<div class="highlight highlight-source-java"><pre>gSheets2A<span class="pl-k">.</span>getData(<span class="pl-smi">Team</span><span class="pl-k">.</span>class, <span class="pl-k">new</span> <span class="pl-smi">GSheets2A</span>.<span class="pl-smi">DataResult</span>() {
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onReceiveData</span>(<span class="pl-smi">ArrayList</span> <span class="pl-v">data</span>) {
+        <span class="pl-k">ArrayList&lt;<span class="pl-smi">Team</span>&gt;</span> teams <span class="pl-k">=</span> data; <span class="pl-c">// convert the ArrayList to Team list</span>
+        <span class="pl-smi">String</span> allNames <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>;
+
+        <span class="pl-c">// Iterate through the list and use the data</span>
+        <span class="pl-k">for</span> (<span class="pl-smi">Team</span> t <span class="pl-k">:</span> teams) {
+            allNames <span class="pl-k">+=</span> t<span class="pl-k">.</span>name <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\t\t</span><span class="pl-pds">"</span></span> <span class="pl-k">+</span> t<span class="pl-k">.</span>totalWins <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\n</span><span class="pl-pds">"</span></span>;
+        }
+        text1<span class="pl-k">.</span>setText(allNames); <span class="pl-c">// use the data</span>
+    }
+});</pre></div>
+
+<p><code>getData(Class, callback)</code> reads the <code>Class</code> and creates an ArrayList of objects of the given class type and passes it to the callback. The callback is executed after all the spreadsheet data is fetched and processed for use.</p>
+
+<h2>
+<a id="gradle" class="anchor" href="#gradle" aria-hidden="true"><span class="octicon octicon-link"></span></a>Gradle</h2>
+
+<p>Add to build.gradle depencencies</p>
+
+<div class="highlight highlight-source-groovy"><pre>dependencies {
+    compile <span class="pl-s"><span class="pl-pds">'</span>space.darkowlzz:gsheets2a:0.1.0<span class="pl-pds">'</span></span>
+}</pre></div>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>LICENSE</h2>
+
+<p>MIT © 2015 Sunny (darkowlzz)</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/darkowlzz">darkowlzz</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-63771901-4");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
