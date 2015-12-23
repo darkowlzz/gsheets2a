@@ -1,6 +1,6 @@
 # GSheets2A
 
-GSheets2A - An android library to fetch Google Sheets data to Android.
+GSheets2A - An android library to fetch Google Sheets data.
 
 ## Usage
 
