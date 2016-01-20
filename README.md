@@ -1,5 +1,8 @@
 # GSheets2A
 
+[ ![Download](https://api.bintray.com/packages/darkowlzz/maven/GSheets2A/images/download.svg) ](https://bintray.com/darkowlzz/maven/GSheets2A/_latestVersion)
+
+
 GSheets2A - An android library to fetch Google Sheets data.
 
 ## Usage
